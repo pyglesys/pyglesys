@@ -1,7 +1,7 @@
 import requests
 
 from .exceptions import LoginException
-from . import modules
+from . import endpoints
 
 
 class Glesys(object):
@@ -31,9 +31,9 @@ class Glesys(object):
             self.s.auth = authinfo
 
         #: Server: Server endpoint
-        self.server = modules.Server(self)
+        self.server = endpoints.Server(self)
         #: User: User endpoint
-        self.user = modules.User(self)
+        self.user = endpoints.User(self)
 
     def login(self, username, password):
         """Authenticate using a username and password
