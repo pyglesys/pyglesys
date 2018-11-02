@@ -19,8 +19,8 @@ Example Usage
 
     import glesys
 
-    gl = glesys.Glesys('account_number', 'api_key')
-    servers = gl.server.list()
+    gs = glesys.Glesys('account_number', 'api_key')
+    servers = gs.server.list()
     print(servers)
 
 .. code-block:: console
