@@ -2,7 +2,7 @@ import io
 import os.path
 import re
 
-from setuptools import setup
+from setuptools import setup, find_packages
 
 package = 'glesys'
 
@@ -24,15 +24,15 @@ test_requires = [
 ]
 
 setup(
-    name=package,
+    name='pyglesys',
     version=version,
     description='Python wrapper around the GleSYS API',
     long_description=readme,
     author='Erik Jansson Agnvall',
     author_email='erikjansson90@gmail.com',
     url='https://github.com/pyglesys/pyglesys',
-    packages=[package],
-    package_data={'': ['LICENSE', 'NOTICE']},
+    packages=find_packages(),
+    package_data={'': ['LICENSE']},
     package_dir={package: package},
     include_package_data=True,
     python_requires=">=2.7, !=3.0.*, !=3.1.*, !=3.2.*, !=3.3.*",
@@ -41,7 +41,7 @@ setup(
     classifiers=[
         'Development Status :: 4 - Beta',
         'Intended Audience :: Developers',
-        'License :: OSI Approved :: MIT',
+        'License :: OSI Approved :: MIT License',
         'Programming Language :: Python',
         'Programming Language :: Python :: 2',
         'Programming Language :: Python :: 2.7',
