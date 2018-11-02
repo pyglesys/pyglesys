@@ -29,3 +29,10 @@ Example Usage
 
     $ python app.py
     [Server(id_="wps1234567", hostname="example.com", datacenter="Falkenberg", platform="VMware")]
+
+
+Disclaimer
+----------
+
+This project is not associated with GleSYS AB in any way. I'm just a private
+person doing this for fun.
