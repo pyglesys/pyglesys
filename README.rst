@@ -4,6 +4,8 @@ py.glesys
 py.glesys is a Python wrapper around the GleSYS API. 
 
 
+**NOTE**: The project is in its infancy, rely on it at your own peril.
+
 Installing
 ----------
 
