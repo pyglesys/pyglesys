@@ -15,7 +15,6 @@ class Glesys(object):
     ----
     authinfo : tuple, optional
         Tuple of length 2 on the format ``(account number, api_key)``.
-
     """
 
     #: Base URL for the API
@@ -30,10 +29,10 @@ class Glesys(object):
         elif authinfo:
             self.s.auth = authinfo
 
-        #: Server: Server endpoint
-        self.server = endpoints.Server(self)
-        #: User: User endpoint
-        self.user = endpoints.User(self)
+        #: ServerEndpoint: Server endpoint
+        self.server = endpoints.ServerEndpoint(self)
+        #: UserEndpoint: User endpoint
+        self.user = endpoints.UserEndpoint(self)
 
     def login(self, username, password):
         """Authenticate using a username and password

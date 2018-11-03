@@ -1,6 +1,14 @@
-from glesys import mixins
-from .base import ModuleBase
+from .base import ApiObject, Endpoint
 
 
-class User(mixins.DetailsMixin, ModuleBase):
-    _detail_path = "/user/details"
+class User(ApiObject):
+    pass
+
+
+class UserEndpoint(Endpoint):
+    _detail_path = "/user/details/"
+
+    def details(self):
+        """Get details of a server."""
+        resp = self._get(self._detail_path)
+        return User(resp['response']['user'], sort_attrs=True)
