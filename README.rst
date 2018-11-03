@@ -28,7 +28,7 @@ Example Usage
 .. code-block:: console
 
     $ python app.py
-    [Server(id_="wps1234567", hostname="example.com", datacenter="Falkenberg", platform="VMware")]
+    [Server({'serverid': 'wps1234567', 'hostname': 'example.com', 'datacenter': 'Falkenberg', 'platform': 'VMware'})]
 
 
 Disclaimer
