@@ -1,3 +1,3 @@
-from .server import Server, ServerEndpoint  # noqa
-from .user import User, UserEndpoint  # noqa
+from .server import ServerEndpoint  # noqa
+from .user import UserEndpoint  # noqa
 from .account import AccountEndpoint  # noqa
