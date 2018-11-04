@@ -33,6 +33,8 @@ class Glesys(object):
         self.server = endpoints.ServerEndpoint(self)
         #: UserEndpoint: User endpoint
         self.user = endpoints.UserEndpoint(self)
+        #: AccountEndpoint: User endpoint
+        self.account = endpoints.AccountEndpoint(self)
 
     def login(self, username, password):
         """Authenticate using a username and password
