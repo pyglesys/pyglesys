@@ -18,6 +18,8 @@ class Server(ApiObject):
         The virtualisation platform (``VMware`` of ``OpenVZ``).
     """
 
+    _networkadapters_path = "/server/networkadapters"
+
     def details(self):
         """Get details of this server.
 
@@ -27,6 +29,20 @@ class Server(ApiObject):
             Detailed information about this server.
         """
         return self.glesys.server.details(self.serverid)
+
+    def networkadapters(self):
+        path = os.path.join(
+            self._networkadapters_path, format_args_get(serverid=self.serverid)
+        )
+        resp = self.glesys._get(path)
+        adapters = [
+            NetworkAdapter(self.glesys, **na) for na in resp.response.networkadapters
+        ]
+        return adapters
+
+
+class NetworkAdapter(ApiObject):
+    pass
 
 
 class DetailedServer(ApiObject):
