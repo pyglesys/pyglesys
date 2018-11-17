@@ -12,5 +12,5 @@ class AccountEndpoint(Endpoint):
 
     def info(self):
         """Get information on currently logged in account."""
-        resp = self._get(self._info_path)
-        return Account(resp['response']['accountinfo'])
+        resp = self.glesys._get(self._info_path)
+        return Account(self.glesys, **resp.response.accountinfo)

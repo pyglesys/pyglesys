@@ -1,28 +1,59 @@
+import collections
 import operator
 
-import sys
-if sys.version_info[0] == 2:
-    from urlparse import urljoin
-else:
-    from urllib.parse import urljoin
+
+def format_args_get(**kwargs):
+    args = ""
+    for k, v in kwargs.items():
+        args += "{}/{}".format(k, v)
+    return args
 
 
-class ApiObject(object):
-    """Base class for objects returned from the API."""
+class ApiObject(collections.MutableMapping):
+    """Represents an object returned from the API.
 
-    def __init__(self, attrs, sort_attrs=False):
-        self.attrs = attrs
+    ``ApiObject`` instances behave basically like :class:`dict` with the
+    addition of the handy dot notation for accessing attributes (i.e.
+    keys) as well as (optionally) sorting attributes alphabetically for
+    output.
+
+    Keyword Args
+    ------------
+    glesys : Glesys
+        A GleSYS instance.
+    sort_attrs : bool
+        Wether or not attributes should be sorted in output.
+    """
+
+    def __init__(self, glesys, sort_attrs=False, **kwargs):
+        self.glesys = glesys
         self._sort_attrs = sort_attrs
+        self._dict = dict(**kwargs)
+
+    def __getitem__(self, key):
+        return self._dict[key]
+
+    def __setitem__(self, key, value):
+        self._dict[key] = value
+
+    def __delitem__(self, key, value):
+        self._dict[key] = value
 
     def __getattr__(self, attr):
         try:
-            return self.attrs[attr]
+            return self[attr]
         except KeyError:
-            msg = "'{}' not found in {}"
-            raise AttributeError(msg.format(attr, self.__class__.__name__))
+            msg = "'{}' object has no attribute '{}'"
+            raise AttributeError(msg.format(self.__class__.__name__, attr))
+
+    def __iter__(self):
+        return iter(self._dict)
+
+    def __len__(self):
+        return len(self._dict)
 
     def __repr__(self):
-        attrs = self.attrs.items()
+        attrs = self.items()
         if self._sort_attrs:
             attrs = sorted(attrs, key=operator.itemgetter(0))
         return "{}({})".format(self.__class__.__name__, dict(attrs))
@@ -30,19 +61,6 @@ class ApiObject(object):
 
 class Endpoint(object):
     """Base class for all endpoints."""
+
     def __init__(self, glesys):
         self.glesys = glesys
-
-    def _get(self, path, **kwargs):
-        url = self._prepare_get(path, **kwargs)
-        return self.glesys.s.get(url).json()
-
-    def _prepare_url(self, path):
-        return urljoin(self.glesys.API_BASE, path)
-
-    def _prepare_get(self, path, **kwargs):
-        url = self._prepare_url(path)
-        args = ""
-        for k, v in kwargs.items():
-            args += "{}/{}".format(k, v)
-        return urljoin(url, args)
