@@ -1,10 +1,12 @@
 py.glesys
 =========
 
-py.glesys is a Python wrapper around the GleSYS API. 
+``py.glesys`` is a library for accessing the `GleSYS API`_ using Python.
 
 
 **NOTE**: The project is in its infancy, rely on it at your own peril.
+
+.. _GleSYS API: https://glesys.com/developers
 
 Installing
 ----------
