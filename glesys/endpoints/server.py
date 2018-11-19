@@ -105,6 +105,4 @@ class ServerEndpoint(Endpoint):
         """
         path = os.path.join(self._detail_path, format_args_get(serverid=server_id))
         resp = self.glesys._get(path)
-        return DetailedServer(
-            self.glesys, **resp.response.server, sort_attrs=True
-        )
+        return DetailedServer(self.glesys, **resp.response.server, sort_attrs=True)
