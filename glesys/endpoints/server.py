@@ -19,6 +19,7 @@ class Server(ApiObject):
     """
 
     _networkadapters_path = "/server/networkadapters"
+    _status_path = "/server/status"
 
     def details(self):
         """Get details of this server.
@@ -30,6 +31,27 @@ class Server(ApiObject):
         """
         return self.glesys.server.details(self.serverid)
 
+    def status(self, include=None):
+        """Get server status.
+
+        Args
+        ----
+        include : list of str
+            A list of what information to include. Allowed values are
+            ``state``, ``cpu``, ``memory``, ``disk`` or ``uptime``. The
+            default is to include all information.
+
+        Returns
+        -------
+        ServerStatus
+            Status information for the server.
+        """
+        if include is not None:
+            include = ",".join(include)
+        args = {"serverid": self.serverid, "statustype": include}
+        resp = self.glesys._post(self._status_path, args)
+        return ServerStatus(self.glesys, **resp.response.server)
+
     def networkadapters(self):
         path = os.path.join(
             self._networkadapters_path, format_args_get(serverid=self.serverid)
@@ -39,6 +61,10 @@ class Server(ApiObject):
             NetworkAdapter(self.glesys, **na) for na in resp.response.networkadapters
         ]
         return adapters
+
+
+class ServerStatus(ApiObject):
+    pass
 
 
 class NetworkAdapter(ApiObject):
