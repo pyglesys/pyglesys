@@ -1,11 +1,12 @@
 import collections
 import operator
+import os.path
 
 
 def format_args_get(**kwargs):
     args = ""
     for k, v in kwargs.items():
-        args += "{}/{}".format(k, v)
+        args = os.path.join(args, "{}/{}".format(k, v))
     return args
 
 
