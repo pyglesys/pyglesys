@@ -13,7 +13,7 @@ class UserEndpoint(Endpoint):
     def details(self):
         """Get details of the currently logged in user."""
         resp = self.glesys._get(self._detail_path)
-        return User(self.glesys, **resp.response.user, sort_attrs=True)
+        return User(**resp.response.user, sort_attrs=True)
 
     def login(self, username, password):
         """Authenticate using a username and password.

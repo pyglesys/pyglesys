@@ -20,14 +20,11 @@ class ApiObject(collections.MutableMapping):
 
     Keyword Args
     ------------
-    glesys : Glesys
-        A GleSYS instance.
     sort_attrs : bool
         Wether or not attributes should be sorted in output.
     """
 
-    def __init__(self, glesys, sort_attrs=False, **kwargs):
-        self.glesys = glesys
+    def __init__(self, sort_attrs=False, **kwargs):
         self._sort_attrs = sort_attrs
         self._dict = dict(**kwargs)
 
@@ -58,6 +55,23 @@ class ApiObject(collections.MutableMapping):
         if self._sort_attrs:
             attrs = sorted(attrs, key=operator.itemgetter(0))
         return "{}({})".format(self.__class__.__name__, dict(attrs))
+
+
+class ApiResource(ApiObject):
+    """Represents an API resource returned from the API.
+
+    An API resource differs from an API object in that further calls to
+    the API can be made by the resource while the object is inert and
+    only represents information.
+
+    Args
+    ----
+    glesys : Glesys
+        A GleSYS instance. Used for calls to the API.
+    """
+    def __init__(self, glesys, sort_attrs=False, **kwargs):
+        self.glesys = glesys
+        super(ApiResource, self).__init__(sort_attrs=sort_attrs, **kwargs)
 
 
 class Endpoint(object):

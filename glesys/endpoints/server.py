@@ -1,9 +1,9 @@
 import os.path
 
-from .base import ApiObject, Endpoint, format_args_get
+from .base import ApiObject, ApiResource, Endpoint, format_args_get
 
 
-class Server(ApiObject):
+class Server(ApiResource):
     """Represents a server resource as returned by the API.
 
     Attributes
@@ -50,7 +50,7 @@ class Server(ApiObject):
             include = ",".join(include)
         args = {"serverid": self.serverid, "statustype": include}
         resp = self.glesys._post(self._status_path, args)
-        return ServerStatus(self.glesys, **resp.response.server)
+        return ServerStatus(**resp.response.server)
 
     def networkadapters(self):
         path = os.path.join(
@@ -58,7 +58,7 @@ class Server(ApiObject):
         )
         resp = self.glesys._get(path)
         adapters = [
-            NetworkAdapter(self.glesys, **na) for na in resp.response.networkadapters
+            NetworkAdapter(**na) for na in resp.response.networkadapters
         ]
         return adapters
 
@@ -105,4 +105,4 @@ class ServerEndpoint(Endpoint):
         """
         path = os.path.join(self._detail_path, format_args_get(serverid=server_id))
         resp = self.glesys._get(path)
-        return DetailedServer(self.glesys, **resp.response.server, sort_attrs=True)
+        return DetailedServer(**resp.response.server, sort_attrs=True)
