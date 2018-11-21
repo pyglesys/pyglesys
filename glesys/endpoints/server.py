@@ -79,6 +79,9 @@ class Server(ApiResource):
         resp = self.glesys._get(path)
         return ConsoleInformation(**resp.response.console)
 
+    def allowed_args(self):
+        return self.glesys.server.allowed_args(server_id=self.serverid)
+
 
 class ServerStatus(ApiObject):
     pass
@@ -110,6 +113,7 @@ class ServerEndpoint(Endpoint):
     _ls_path = "/server/list"
     _detail_path = "/server/details"
     _templates_path = "/server/templates"
+    _allowed_args_path = "/server/allowedarguments"
 
     def list(self):
         """List servers on the account.
@@ -145,3 +149,12 @@ class ServerEndpoint(Endpoint):
             for t in ts:
                 templates.append(ServerTemplate(**t))
         return templates
+
+    def allowed_args(self, server_id=None):
+        path = self._allowed_args_path
+        if server_id is not None:
+            path = os.path.join(
+                path, format_args_get(serverid=server_id)
+            )
+        resp = self.glesys._get(path)
+        return resp.response.argumentslist.todict()
