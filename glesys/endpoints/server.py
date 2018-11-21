@@ -20,6 +20,8 @@ class Server(ApiResource):
 
     _networkadapters_path = "/server/networkadapters"
     _status_path = "/server/status"
+    _limits_path = "/server/limits"
+    _console_path = "/server/console"
 
     def details(self):
         """Get details of this server.
@@ -62,12 +64,35 @@ class Server(ApiResource):
         ]
         return adapters
 
+    def limits(self):
+        # TODO: Test with OpenVZ server
+        path = os.path.join(
+            self._limits_path, format_args_get(serverid=self.serverid)
+        )
+        resp = self.glesys._get(path)
+        return Limits(**resp.response.limits)
+
+    def console(self):
+        path = os.path.join(
+            self._console_path, format_args_get(serverid=self.serverid)
+        )
+        resp = self.glesys._get(path)
+        return ConsoleInformation(**resp.response.console)
+
 
 class ServerStatus(ApiObject):
     pass
 
 
 class NetworkAdapter(ApiObject):
+    pass
+
+
+class Limits(ApiObject):
+    pass
+
+
+class ConsoleInformation(ApiObject):
     pass
 
 
