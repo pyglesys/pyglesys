@@ -22,6 +22,7 @@ class Server(ApiResource):
     _status_path = "/server/status"
     _limits_path = "/server/limits"
     _console_path = "/server/console"
+    _costs_path = "/server/costs"
 
     def details(self):
         """Get details of this server.
@@ -81,6 +82,13 @@ class Server(ApiResource):
 
     def allowed_args(self):
         return self.glesys.server.allowed_args(server_id=self.serverid)
+
+    def costs(self):
+        path = os.path.join(
+            self._costs_path, format_args_get(serverid=self.serverid)
+        )
+        resp = self.glesys._get(path)
+        return resp.response.costs.todict()
 
 
 class ServerStatus(ApiObject):
