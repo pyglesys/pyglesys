@@ -30,6 +30,9 @@ class Box(Mapping):
     def __init__(self, *args, **kwargs):
         self.__dict = dict(*args, **kwargs)
 
+    def todict(self):
+        return dict(self.__dict)
+
     def __getitem__(self, key):
         return self.__dict[key]
 
