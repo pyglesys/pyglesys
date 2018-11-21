@@ -23,6 +23,7 @@ class Server(ApiResource):
     _limits_path = "/server/limits"
     _console_path = "/server/console"
     _costs_path = "/server/costs"
+    _listiso_path = "/server/listiso'"
 
     def details(self):
         """Get details of this server.
@@ -89,6 +90,15 @@ class Server(ApiResource):
         )
         resp = self.glesys._get(path)
         return resp.response.costs.todict()
+
+    def list_iso(self):
+        path = os.path.join(
+            self._listiso_path, format_args_get(serverid=self.serverid)
+        )
+        resp = self.glesys._get(path)
+        # Need to call todict() before getting at the isofiles list
+        # since list objects doesn't have todict().
+        return resp.response.todict()["isofiles"]
 
 
 class ServerStatus(ApiObject):
