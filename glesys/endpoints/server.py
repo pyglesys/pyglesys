@@ -100,11 +100,16 @@ class DetailedServer(ApiObject):
     """Represents detailed information about a server."""
 
 
+class ServerTemplate(ApiObject):
+    pass
+
+
 class ServerEndpoint(Endpoint):
     """Server API endpoint."""
 
     _ls_path = "/server/list"
     _detail_path = "/server/details"
+    _templates_path = "/server/templates"
 
     def list(self):
         """List servers on the account.
@@ -131,3 +136,12 @@ class ServerEndpoint(Endpoint):
         path = os.path.join(self._detail_path, format_args_get(serverid=server_id))
         resp = self.glesys._get(path)
         return DetailedServer(**resp.response.server, sort_attrs=True)
+
+    def templates(self):
+        """Get available operating system templates."""
+        resp = self.glesys._get(self._templates_path)
+        templates = []
+        for group, ts in resp.response.templates.items():
+            for t in ts:
+                templates.append(ServerTemplate(**t))
+        return templates
